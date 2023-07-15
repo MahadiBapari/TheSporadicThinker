@@ -1,0 +1,49 @@
+.article{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    padding: 50px 250px;
+}
+
+.article h2{
+    font-size: 50px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.articlePosts{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+    margin-bottom: 50px;
+}
+
+.btn{
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #020202;
+    border: 2px solid #000000;
+    cursor: pointer;
+    position: relative;
+    margin: 50px;
+  }
+
+.btn:hover{
+    background:transparent;
+    border: 2px solid rgb(0, 0, 0);
+    color: #000000;
+    transform: scale(1.1);
+    transition: ease .5s;
+  }
+
+.btn:active{
+    transform: scale(1);
+    transition: none;
+}

@@ -1,0 +1,45 @@
+.articleDetail{
+    width: 100%;
+    height: auto;
+    padding: 0px 250px;
+
+}
+
+.imageContainer {
+    position: relative;
+}  
+
+.imageContainer img{
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+}  
+
+.imageContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.432), rgba(0, 0, 0, 0.164));
+}
+
+.articleData{
+   padding: 50px 50px;
+   display: flex;
+   flex-direction: column;
+   gap: 50px;
+
+}
+
+.articleData h1{
+    text-align: center;
+    font-size: 50px;
+}
+
+.articleData p{
+    font-size: 20px;
+}
+

@@ -1,0 +1,16 @@
+.quote{
+    width: 100%;
+    height: 250px;
+    background-color: rgba(255, 249, 240, 0.616);
+    padding: 0px 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Great Vibes', cursive;
+
+}
+
+.quote h2{
+   font-size: 40px; 
+}
