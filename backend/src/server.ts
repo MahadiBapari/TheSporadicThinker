@@ -7,6 +7,8 @@ import authRoutes from "./routes/authRoutes";
 import healthRoutes from "./routes/healthRoutes";
 import postRoutes from "./routes/postRoutes";
 import adminPostRoutes from "./routes/adminPostRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
+import adminCategoryRoutes from "./routes/adminCategoryRoutes";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import path from "path";
 
@@ -32,6 +34,8 @@ app.use("/api", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/admin/posts", adminPostRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/admin/categories", adminCategoryRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
