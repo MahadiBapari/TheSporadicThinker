@@ -9,6 +9,7 @@ import postRoutes from "./routes/postRoutes";
 import adminPostRoutes from "./routes/adminPostRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 import adminCategoryRoutes from "./routes/adminCategoryRoutes";
+import adminStatsRoutes from "./routes/adminStatsRoutes";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import path from "path";
 
@@ -16,7 +17,13 @@ dotenv.config();
 
 const app: Application = express();
 
-app.use(helmet());
+// Use helmet but disable Cross-Origin-Resource-Policy so images can be
+// loaded from the frontend origin (e.g. localhost:3000).
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN || "http://localhost:3000",
@@ -36,6 +43,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/admin/posts", adminPostRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/admin/categories", adminCategoryRoutes);
+app.use("/api/admin/stats", adminStatsRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -6,6 +6,7 @@ import {
   getPostById,
   getPostBySlug,
   getPublishedPosts,
+  getHeroPosts,
   updatePost,
 } from "../models/postModel";
 
@@ -21,13 +22,24 @@ export async function createAdminPost(
   next: NextFunction
 ) {
   try {
-    const { title, slug, content, excerpt, status, categoryId } = req.body as {
+    const {
+      title,
+      slug,
+      content,
+      excerpt,
+      status,
+      categoryId,
+      isHero,
+      heroOrder,
+    } = req.body as {
       title: string;
       slug?: string;
       content: string;
       excerpt?: string;
       status?: "draft" | "published";
       categoryId?: string;
+      isHero?: string;
+      heroOrder?: string;
     };
 
     if (!title || !content) {
@@ -53,6 +65,11 @@ export async function createAdminPost(
       status: status || "draft",
       author_id: authorId,
       category_id: toNumber(categoryId),
+      is_hero: isHero === "1" || isHero === "true",
+      hero_order:
+        heroOrder !== undefined && heroOrder !== ""
+          ? Number(heroOrder)
+          : null,
     });
 
     return res.status(201).json({ post });
@@ -72,13 +89,24 @@ export async function updateAdminPost(
       return res.status(400).json({ message: "Invalid post id" });
     }
 
-    const { title, slug, content, excerpt, status, categoryId } = req.body as {
+    const {
+      title,
+      slug,
+      content,
+      excerpt,
+      status,
+      categoryId,
+      isHero,
+      heroOrder,
+    } = req.body as {
       title?: string;
       slug?: string;
       content?: string;
       excerpt?: string;
       status?: "draft" | "published";
       categoryId?: string;
+      isHero?: string;
+      heroOrder?: string;
     };
 
     const file = (req as any).file as Express.Multer.File | undefined;
@@ -92,6 +120,16 @@ export async function updateAdminPost(
       status,
       category_id: categoryId !== undefined ? toNumber(categoryId) : undefined,
       featured_image: featuredImage,
+      is_hero:
+        isHero !== undefined
+          ? isHero === "1" || isHero === "true"
+          : undefined,
+      hero_order:
+        heroOrder !== undefined && heroOrder !== ""
+          ? Number(heroOrder)
+          : heroOrder === ""
+          ? null
+          : undefined,
     });
 
     if (!updated) {
@@ -171,6 +209,19 @@ export async function getPublicPosts(
 ) {
   try {
     const posts = await getPublishedPosts();
+    return res.json({ posts });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getPublicHeroPosts(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const posts = await getHeroPosts();
     return res.json({ posts });
   } catch (err) {
     next(err);
