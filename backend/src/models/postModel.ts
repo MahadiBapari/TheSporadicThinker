@@ -12,6 +12,7 @@ export interface PostRecord {
   category_id: number | null;
   is_hero?: 0 | 1;
   hero_order?: number | null;
+  is_favorite?: 0 | 1;
   views: number;
   created_at: string;
   updated_at: string;
@@ -28,6 +29,7 @@ export interface NewPostInput {
   category_id?: number | null;
   is_hero?: boolean;
   hero_order?: number | null;
+  is_favorite?: boolean;
 }
 
 export interface UpdatePostInput {
@@ -40,6 +42,7 @@ export interface UpdatePostInput {
   category_id?: number | null;
   is_hero?: boolean;
   hero_order?: number | null;
+  is_favorite?: boolean;
 }
 
 export async function createPost(input: NewPostInput): Promise<PostRecord> {
@@ -54,12 +57,13 @@ export async function createPost(input: NewPostInput): Promise<PostRecord> {
     category_id = null,
     is_hero = false,
     hero_order = null,
+    is_favorite = false,
   } = input;
 
   const [result] = await pool.execute(
     `INSERT INTO posts
-      (title, slug, content, excerpt, featured_image, status, author_id, category_id, is_hero, hero_order)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (title, slug, content, excerpt, featured_image, status, author_id, category_id, is_hero, hero_order, is_favorite)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       title,
       slug,
@@ -71,6 +75,7 @@ export async function createPost(input: NewPostInput): Promise<PostRecord> {
       category_id,
       is_hero ? 1 : 0,
       hero_order,
+      is_favorite ? 1 : 0,
     ]
   );
 
@@ -125,6 +130,10 @@ export async function updatePost(
     fields.push("hero_order = ?");
     values.push(updates.hero_order);
   }
+  if (updates.is_favorite !== undefined) {
+    fields.push("is_favorite = ?");
+    values.push(updates.is_favorite ? 1 : 0);
+  }
 
   if (!fields.length) {
     return getPostById(id);
@@ -162,11 +171,19 @@ export async function getPostBySlug(
   return typed[0] || null;
 }
 
-export async function getPublishedPosts(): Promise<PostRecord[]> {
+export async function getPublishedPosts(): Promise<any[]> {
   const [rows] = await pool.execute(
-    "SELECT * FROM posts WHERE status = 'published' ORDER BY created_at DESC"
+    `SELECT p.*, 
+            c.id AS cat_id,
+            c.name AS cat_name,
+            c.slug AS cat_slug,
+            c.description AS cat_description
+     FROM posts p
+     LEFT JOIN categories c ON p.category_id = c.id
+     WHERE p.status = 'published'
+     ORDER BY p.created_at DESC`
   );
-  return rows as PostRecord[];
+  return rows as any[];
 }
 
 export async function getAllPosts(): Promise<PostRecord[]> {
@@ -186,6 +203,22 @@ export async function getHeroPosts(): Promise<PostRecord[]> {
      LIMIT 3`
   );
   return rows as PostRecord[];
+}
+
+export async function getFavoritePosts(): Promise<any[]> {
+  const [rows] = await pool.execute(
+    `SELECT p.*, 
+            c.id AS cat_id,
+            c.name AS cat_name,
+            c.slug AS cat_slug,
+            c.description AS cat_description
+     FROM posts p
+     LEFT JOIN categories c ON p.category_id = c.id
+     WHERE p.status = 'published' AND p.is_favorite = 1
+     ORDER BY RAND()
+     LIMIT 3`
+  );
+  return rows as any[];
 }
 
 

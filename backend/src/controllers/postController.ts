@@ -7,6 +7,7 @@ import {
   getPostBySlug,
   getPublishedPosts,
   getHeroPosts,
+  getFavoritePosts,
   updatePost,
 } from "../models/postModel";
 
@@ -31,6 +32,7 @@ export async function createAdminPost(
       categoryId,
       isHero,
       heroOrder,
+      isFavorite,
     } = req.body as {
       title: string;
       slug?: string;
@@ -40,6 +42,7 @@ export async function createAdminPost(
       categoryId?: string;
       isHero?: string;
       heroOrder?: string;
+      isFavorite?: string;
     };
 
     if (!title || !content) {
@@ -70,6 +73,7 @@ export async function createAdminPost(
         heroOrder !== undefined && heroOrder !== ""
           ? Number(heroOrder)
           : null,
+      is_favorite: isFavorite === "1" || isFavorite === "true",
     });
 
     return res.status(201).json({ post });
@@ -98,6 +102,7 @@ export async function updateAdminPost(
       categoryId,
       isHero,
       heroOrder,
+      isFavorite,
     } = req.body as {
       title?: string;
       slug?: string;
@@ -107,6 +112,7 @@ export async function updateAdminPost(
       categoryId?: string;
       isHero?: string;
       heroOrder?: string;
+      isFavorite?: string;
     };
 
     const file = (req as any).file as Express.Multer.File | undefined;
@@ -129,6 +135,10 @@ export async function updateAdminPost(
           ? Number(heroOrder)
           : heroOrder === ""
           ? null
+          : undefined,
+      is_favorite:
+        isFavorite !== undefined
+          ? isFavorite === "1" || isFavorite === "true"
           : undefined,
     });
 
@@ -209,7 +219,22 @@ export async function getPublicPosts(
 ) {
   try {
     const posts = await getPublishedPosts();
-    return res.json({ posts });
+    // Format posts with nested category data
+    const formattedPosts = posts.map((post: any) => {
+      const { cat_id, cat_name, cat_slug, cat_description, ...postData } = post;
+      return {
+        ...postData,
+        category: cat_id
+          ? {
+              id: cat_id,
+              name: cat_name,
+              slug: cat_slug,
+              description: cat_description,
+            }
+          : null,
+      };
+    });
+    return res.json({ posts: formattedPosts });
   } catch (err) {
     next(err);
   }
@@ -223,6 +248,34 @@ export async function getPublicHeroPosts(
   try {
     const posts = await getHeroPosts();
     return res.json({ posts });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getPublicFavoritePosts(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const posts = await getFavoritePosts();
+    // Format posts with nested category data
+    const formattedPosts = posts.map((post: any) => {
+      const { cat_id, cat_name, cat_slug, cat_description, ...postData } = post;
+      return {
+        ...postData,
+        category: cat_id
+          ? {
+              id: cat_id,
+              name: cat_name,
+              slug: cat_slug,
+              description: cat_description,
+            }
+          : null,
+      };
+    });
+    return res.json({ posts: formattedPosts });
   } catch (err) {
     next(err);
   }
