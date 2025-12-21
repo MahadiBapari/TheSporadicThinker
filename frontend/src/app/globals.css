@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Brand palette */
+  --color-bg: #fffcf5;
+  --color-bg-muted: #ffede391;
+  --color-text: #171717;
+  --color-text-muted: #4b5563;
+
+  --color-accent: #fe9800;
+  --color-accent-light: #ffbf00;
+  --color-accent-dark: #000000;
+  --color-border: #fcdeb8;
+
+  /* Hero-specific colors */
+  --hero-bg: #2c1807;
+  --hero-overlay-start: rgba(40, 23, 7, 0.068);
+  --hero-overlay-end: rgba(31, 18, 3, 0.874);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-marcellus), serif;
+  font-weight: 400;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
