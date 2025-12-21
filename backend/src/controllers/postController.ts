@@ -293,7 +293,21 @@ export async function getPublicPostBySlug(
       return res.status(404).json({ message: "Post not found" });
     }
 
-    return res.json({ post });
+    // Format post with nested category data
+    const { cat_id, cat_name, cat_slug, cat_description, ...postData } = post;
+    const formattedPost = {
+      ...postData,
+      category: cat_id
+        ? {
+            id: cat_id,
+            name: cat_name,
+            slug: cat_slug,
+            description: cat_description,
+          }
+        : null,
+    };
+
+    return res.json({ post: formattedPost });
   } catch (err) {
     next(err);
   }

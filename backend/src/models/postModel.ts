@@ -162,12 +162,19 @@ export async function getPostById(id: number): Promise<PostRecord | null> {
 export async function getPostBySlug(
   slug: string,
   onlyPublished = true
-): Promise<PostRecord | null> {
+): Promise<any | null> {
   const [rows] = await pool.execute(
-    `SELECT * FROM posts WHERE slug = ? ${onlyPublished ? "AND status = 'published'" : ""}`,
+    `SELECT p.*, 
+            c.id AS cat_id,
+            c.name AS cat_name,
+            c.slug AS cat_slug,
+            c.description AS cat_description
+     FROM posts p
+     LEFT JOIN categories c ON p.category_id = c.id
+     WHERE p.slug = ? ${onlyPublished ? "AND p.status = 'published'" : ""}`,
     [slug]
   );
-  const typed = rows as PostRecord[];
+  const typed = rows as any[];
   return typed[0] || null;
 }
 
@@ -215,8 +222,7 @@ export async function getFavoritePosts(): Promise<any[]> {
      FROM posts p
      LEFT JOIN categories c ON p.category_id = c.id
      WHERE p.status = 'published' AND p.is_favorite = 1
-     ORDER BY RAND()
-     LIMIT 3`
+     ORDER BY p.created_at DESC`
   );
   return rows as any[];
 }

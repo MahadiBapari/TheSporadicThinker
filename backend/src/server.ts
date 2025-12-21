@@ -33,9 +33,17 @@ app.use(
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json());
 
-// Serve uploaded images
+// Serve uploaded images with CORS headers
 const uploadsPath = path.join(process.cwd(), "uploads");
-app.use("/uploads", express.static(uploadsPath));
+app.use(
+  "/uploads",
+  express.static(uploadsPath, {
+    setHeaders: (res) => {
+      res.set("Access-Control-Allow-Origin", process.env.CORS_ORIGIN || "http://localhost:3000");
+      res.set("Cross-Origin-Resource-Policy", "cross-origin");
+    },
+  })
+);
 
 app.use("/api", healthRoutes);
 app.use("/api/auth", authRoutes);
