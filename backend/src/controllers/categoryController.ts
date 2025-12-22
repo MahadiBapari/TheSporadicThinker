@@ -1,4 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
+
+// Type assertions for Express 5 compatibility
+type ExpressRequest = Request & { body?: any; params?: any; user?: any };
+type ExpressResponse = Response & { status: (code: number) => ExpressResponse; json: (body: any) => ExpressResponse };
+type ExpressNextFunction = (err?: any) => void;
 import {
   CategoryRecord,
   createCategory,
@@ -21,25 +26,25 @@ function slugify(value: string): string {
 // Admin controllers
 
 export async function getAdminCategories(
-  _req: Request,
-  res: Response,
-  next: NextFunction
+  _req: ExpressRequest,
+  res: ExpressResponse,
+  next: ExpressNextFunction
 ) {
   try {
     const categories = await getAllCategoriesWithCounts();
-    return res.json({ categories });
+    return (res as any).json({ categories });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
 export async function createAdminCategory(
-  req: Request,
-  res: Response,
-  next: NextFunction
+  req: ExpressRequest,
+  res: ExpressResponse,
+  next: ExpressNextFunction
 ) {
   try {
-    const { name, slug, description, isVisible, sortOrder } = req.body as {
+    const { name, slug, description, isVisible, sortOrder } = (req.body || {}) as {
       name: string;
       slug?: string;
       description?: string;
@@ -48,7 +53,7 @@ export async function createAdminCategory(
     };
 
     if (!name) {
-      return res.status(400).json({ message: "Name is required" });
+      return (res as any).status(400).json({ message: "Name is required" });
     }
 
     const category = await createCategory({
@@ -59,24 +64,24 @@ export async function createAdminCategory(
       sort_order: sortOrder ?? 0,
     } as any);
 
-    return res.status(201).json({ category });
+    return (res as any).status(201).json({ category });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
 export async function updateAdminCategory(
-  req: Request,
-  res: Response,
-  next: NextFunction
+  req: ExpressRequest,
+  res: ExpressResponse,
+  next: ExpressNextFunction
 ) {
   try {
-    const id = Number(req.params.id);
+    const id = Number((req.params || {}).id);
     if (Number.isNaN(id)) {
-      return res.status(400).json({ message: "Invalid category id" });
+      return (res as any).status(400).json({ message: "Invalid category id" });
     }
 
-    const { name, slug, description, isVisible, sortOrder } = req.body as {
+    const { name, slug, description, isVisible, sortOrder } = (req.body || {}) as {
       name?: string;
       slug?: string;
       description?: string;
@@ -93,50 +98,50 @@ export async function updateAdminCategory(
     } as any);
 
     if (!updated) {
-      return res.status(404).json({ message: "Category not found" });
+      return (res as any).status(404).json({ message: "Category not found" });
     }
 
-    return res.json({ category: updated });
+    return (res as any).json({ category: updated });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
 export async function deleteAdminCategory(
-  req: Request,
-  res: Response,
-  next: NextFunction
+  req: ExpressRequest,
+  res: ExpressResponse,
+  next: ExpressNextFunction
 ) {
   try {
-    const id = Number(req.params.id);
+    const id = Number((req.params || {}).id);
     if (Number.isNaN(id)) {
-      return res.status(400).json({ message: "Invalid category id" });
+      return (res as any).status(400).json({ message: "Invalid category id" });
     }
 
     const existing: CategoryRecord | null = await getCategoryById(id);
     if (!existing) {
-      return res.status(404).json({ message: "Category not found" });
+      return (res as any).status(404).json({ message: "Category not found" });
     }
 
     await deleteCategory(id);
-    return res.status(204).send();
+    return (res as any).status(204).send();
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
 // Public controllers
 
 export async function getPublicCategories(
-  _req: Request,
-  res: Response,
-  next: NextFunction
+  _req: ExpressRequest,
+  res: ExpressResponse,
+  next: ExpressNextFunction
 ) {
   try {
     const categories = await getVisibleCategories();
-    return res.json({ categories });
+    return (res as any).json({ categories });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 

@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { type Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -15,7 +15,7 @@ import path from "path";
 
 dotenv.config();
 
-const app: Application = express();
+const app = express() as any;
 
 // Use helmet but disable Cross-Origin-Resource-Policy so images can be
 // loaded from the frontend origin (e.g. localhost:3000).
@@ -39,7 +39,7 @@ const uploadsPath = path.join(process.cwd(), "uploads");
 app.use(
   "/uploads",
   express.static(uploadsPath, {
-    setHeaders: (res) => {
+    setHeaders: (res: any) => {
       res.set("Access-Control-Allow-Origin", process.env.CORS_ORIGIN || "http://localhost:3000");
       res.set("Cross-Origin-Resource-Policy", "cross-origin");
     },

@@ -1,4 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
+
+// Type assertions for Express 5 compatibility
+type ExpressRequest = Request & { body?: any; user?: any };
+type ExpressResponse = Response & { status: (code: number) => ExpressResponse; json: (body: any) => ExpressResponse };
+type ExpressNextFunction = (err?: any) => void;
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
@@ -10,17 +15,17 @@ import {
 } from "../models/userModel";
 
 export async function register(
-  req: Request,
-  res: Response,
-  next: NextFunction
+  req: ExpressRequest,
+  res: ExpressResponse,
+  next: ExpressNextFunction
 ) {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return (res as any).status(400).json({ errors: errors.array() });
     }
 
-    const { username, email, password } = req.body as {
+    const { username, email, password } = (req.body || {}) as {
       username: string;
       email: string;
       password: string;
@@ -28,7 +33,7 @@ export async function register(
 
     const existing = await findUserByEmail(email);
     if (existing) {
-      return res.status(400).json({ message: "Email already in use" });
+      return (res as any).status(400).json({ message: "Email already in use" });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -39,32 +44,32 @@ export async function register(
       role: "admin",
     });
 
-    return res.status(201).json({ user });
+    return (res as any).status(201).json({ user });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
-export async function login(req: Request, res: Response, next: NextFunction) {
+export async function login(req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return (res as any).status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body as {
+    const { email, password } = (req.body || {}) as {
       email: string;
       password: string;
     };
 
     const user = (await findUserByEmail(email)) as UserRecord | null;
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return (res as any).status(401).json({ message: "Invalid credentials" });
     }
 
     const match = await verifyPassword(password, user.password);
     if (!match) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return (res as any).status(401).json({ message: "Invalid credentials" });
     }
 
     const secret = process.env.JWT_SECRET || "changeme";
@@ -79,7 +84,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       { expiresIn } as jwt.SignOptions
     );
 
-    return res.json({
+    return (res as any).json({
       token,
       user: {
         id: user.id,
@@ -89,29 +94,29 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       },
     });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
-export async function getMe(req: Request, res: Response, next: NextFunction) {
+export async function getMe(req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) {
   try {
-    const userId = req.user?.id;
-    if (!userId || !req.user) {
-      return res.status(401).json({ message: "Not authorized" });
+    const userId = (req as any).user?.id;
+    if (!userId || !(req as any).user) {
+      return (res as any).status(401).json({ message: "Not authorized" });
     }
 
     // TODO: Fetch user from database for complete user info
     // For now, return user from token
     const user = {
-      id: req.user.id,
-      username: req.user.username || "Admin",
-      email: req.user.email,
-      role: req.user.role,
+      id: (req as any).user.id,
+      username: (req as any).user.username || "Admin",
+      email: (req as any).user.email,
+      role: (req as any).user.role,
     };
 
-    return res.json({ user });
+    return (res as any).json({ user });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
