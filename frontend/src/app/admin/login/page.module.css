@@ -73,7 +73,7 @@
   color: #231000;
   background-color: rgb(255, 250, 241);
   border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 0.75px solid #d1d5db;
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
