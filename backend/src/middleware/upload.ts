@@ -1,25 +1,30 @@
 import multer from "multer";
-import path from "path";
-import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
-const uploadsDir = path.join(process.cwd(), "uploads");
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const base = path
-      .basename(file.originalname, ext)
+// Create storage engine for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (_req, file) => {
+    const ext = file.originalname.split('.').pop() || 'jpg';
+    const base = file.originalname
       .replace(/\s+/g, "-")
-      .toLowerCase();
+      .toLowerCase()
+      .replace(/\.[^/.]+$/, "");
     const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `${base}-${unique}${ext}`);
+    return {
+      folder: "thesporadicthinker",
+      public_id: `post-${base}-${unique}`,
+      format: ext,
+      resource_type: "image" as const,
+    };
   },
 });
 

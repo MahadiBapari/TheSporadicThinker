@@ -57,7 +57,8 @@ export async function createAdminPost(
     }
 
     const file = (req as any).file as Express.Multer.File | undefined;
-    const featuredImage = file ? `/uploads/${file.filename}` : null;
+    // Cloudinary returns the URL in file.path
+    const featuredImage = file ? (file as any).path : null;
 
     const post = await createPost({
       title,
@@ -116,7 +117,8 @@ export async function updateAdminPost(
     };
 
     const file = (req as any).file as Express.Multer.File | undefined;
-    const featuredImage = file ? `/uploads/${file.filename}` : undefined;
+    // Cloudinary returns the URL in file.path
+    const featuredImage = file ? (file as any).path : undefined;
 
     const updated = await updatePost(id, {
       title,

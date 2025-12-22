@@ -33,7 +33,8 @@ app.use(
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json());
 
-// Serve uploaded images with CORS headers
+// Serve uploaded images with CORS headers (for backward compatibility with old images)
+// Note: New uploads use Cloudinary, but we keep this for existing images that may still reference /uploads/
 const uploadsPath = path.join(process.cwd(), "uploads");
 app.use(
   "/uploads",
