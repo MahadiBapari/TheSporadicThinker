@@ -1113,36 +1113,38 @@
    ========================================= */
 
 /* 16:9 and wider – reduce vertical height and narrow content a bit on very wide screens */
-@media (min-aspect-ratio: 16/9) and (min-width: 1024px) {
+@media (min-aspect-ratio: 16/9) and (min-width: 1536px) {
   .heroSection,
   .aboutSection,
   .favouritesSection,
   .categorySection {
     width: 88%;
-    max-width: 1400px;
+    max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
   }
-
+/* 
   .heroStrip {
-    height: 60vh; /* was 70vh, slightly shorter for 16:9+ */
+    height: 60vh; /* was 70vh, slightly shorter for 16:9+ 
   }
 
   .aboutSection {
-    height: 60vh; /* keep the hero-style about section from feeling too tall */
+    height: 60vh; /* keep the hero-style about section from feeling too tall 
   }
 
   .categoryCard {
-    min-height: 460px; /* a bit shorter cards on extra-wide displays */
+    min-height: 460px; /* a bit shorter cards on extra-wide displays 
   }
 
   .favouriteImageWrapper {
-    height: 320px; /* tighten favourite cards so fold sits closer */
+    height: 320px; /* tighten favourite cards so fold sits closer 
   }
+  
+  */
 }
 
 /* 3:2 (slightly taller than 16:10) – give more vertical breathing room and a bit more width */
-@media (max-aspect-ratio: 3/2) and (min-width: 1024px) {
+/* @media (max-aspect-ratio: 3/2) and (min-width: 1024px) {
   .heroSection,
   .aboutSection,
   .favouritesSection,
@@ -1154,7 +1156,7 @@
   }
 
   .heroStrip {
-    height: 75vh; /* a bit taller than base on 3:2 */
+    height: 75vh; /* a bit taller than base on 3:2 
   }
 
   .aboutSection {
@@ -1162,11 +1164,11 @@
   }
 
   .categoryCard {
-    min-height: 560px; /* more room for text and overlay */
+    min-height: 560px; /* more room for text and overlay 
   }
 
   .favouriteImageWrapper {
-    height: 380px; /* scale image area with the extra vertical space */
+    height: 380px; /* scale image area with the extra vertical space 
   }
 }
-
+ */
