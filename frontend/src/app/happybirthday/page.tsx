@@ -42,7 +42,7 @@ export default function HappyBirthdayPage() {
 
   return (
     <div className={styles.page}>
-      {/* Animated Cake */}
+      {/* Floating Cake Image */}
       <div className={styles.cakeContainer}>
         {/* Happy Birthday Text Animation */}
         {showBirthdayText && (
@@ -62,22 +62,15 @@ export default function HappyBirthdayPage() {
             ))}
           </div>
         )}
-        <div className={styles.cake} onClick={handleCakeClick}>
-          {/* Candle */}
-          <div className={styles.candle}>
-            <div className={styles.flame}>
-              <div className={styles.flameInner}></div>
-            </div>
-            <div className={styles.wick}></div>
-          </div>
-          {/* Cake Layers */}
-          <div className={styles.cakeTop}></div>
-          <div className={styles.cakeMiddle}></div>
-          {/* <div className={styles.cakeBottom}></div> */}
-          {/* Decorations */}
-          {/* <div className={styles.decoration1}></div>
-          <div className={styles.decoration2}></div>
-          <div className={styles.decoration3}></div> */}
+        <div className={styles.cakeImageWrapper} onClick={handleCakeClick}>
+          <Image
+            src="/cake.png"
+            alt="Birthday Cake"
+            width={200}
+            height={240}
+            className={styles.cakeImage}
+            priority
+          />
         </div>
       </div>
       {/* Hero Section */}
