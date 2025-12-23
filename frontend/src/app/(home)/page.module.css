@@ -186,6 +186,16 @@
   }
 }
 
+@media (min-aspect-ratio: 16/9) and (min-width: 1536px) {
+  .favoritesSection {
+    padding: 2rem 0rem;
+    width: 88%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .favoritesHeader {
   display: flex;
   align-items: center;
@@ -1122,7 +1132,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  
+
 /* 
   .heroStrip {
     height: 60vh; /* was 70vh, slightly shorter for 16:9+ 
