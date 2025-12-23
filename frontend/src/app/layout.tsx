@@ -11,8 +11,13 @@ const marcellus = Marcellus({
 });
 
 export const metadata: Metadata = {
-  title: "The Sporadic Thinker | Blog",
+  title: "The Sporadic Thinker",
   description: "A blog about thoughts, ideas, and everything in between",
+  icons: {
+    icon: "/webtile.png",
+    shortcut: "/webtile.png",
+    apple: "/webtile.png",
+  },
 };
 
 export default function RootLayout({
