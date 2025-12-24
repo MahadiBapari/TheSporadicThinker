@@ -497,6 +497,14 @@
   min-height: 80vh;
 }
 
+/* 16:9 and wider screens - use cover to fill the section */
+@media (min-aspect-ratio: 16/9) and (min-width: 1024px) {
+  .surpriseSection {
+    background-size: cover;
+    min-height: 100vh;
+  }
+}
+
 .surpriseContainer {
   max-width: auto;
   margin: 0 auto;
