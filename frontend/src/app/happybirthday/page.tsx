@@ -120,7 +120,7 @@ So today, I celebrate you in absence, loving you in longing, holding you in ever
       {/* Surprise Section */}
       <section className={styles.surpriseSection}>
         <div className={styles.surpriseContainer}>
-          <p className={styles.surpriseText}>Hey baby I couldnt get you much this year.<br /> But here is a small gift from me to you. <br /> Unbox the gift Baby</p>
+          <p className={styles.surpriseText}>Hey baby I couldnt get you much this year.<br /> But here is a small gift from me to you. <br /> <br /><b>Click on the gift box to unbox it.</b></p>
           <Link href="https://thesporadicthinker.com" className={styles.surpriseGiftBox}>
             <Image
               src="/giftbox.png"
