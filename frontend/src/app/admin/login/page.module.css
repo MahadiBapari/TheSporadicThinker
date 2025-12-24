@@ -70,6 +70,7 @@
 .input {
   width: 100%;
   padding: 0.75rem;
+  padding-right: 3rem;
   color: #231000;
   background-color: rgb(255, 250, 241);
   border-radius: 0.5rem;
@@ -82,6 +83,36 @@
   outline: none;
   border-color: #421a02;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.passwordInputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: color 0.2s;
+}
+
+.eyeButton:hover {
+  color: #374151;
+}
+
+.eyeButton:focus {
+  outline: none;
+  color: #421a02;
 }
 
 .button {

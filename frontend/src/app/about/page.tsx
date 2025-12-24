@@ -82,12 +82,12 @@ export default function AboutPage() {
                 <div className={styles.infoItem}>
                   <span className={styles.infoLabel}>Focus</span>
                   <span className={styles.infoValue}>
-                    Lifestyle • Reflection • Storytelling
+                     • Life • Love • Storytelling
                   </span>
                 </div>
                 <div className={styles.infoItem}>
                   <span className={styles.infoLabel}>Based in</span>
-                  <span className={styles.infoValue}>—</span>
+                  <span className={styles.infoValue}>Bangladesh</span>
                 </div>
               </div>
             </div>
