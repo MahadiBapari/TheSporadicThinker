@@ -489,11 +489,12 @@
 .surpriseSection {
   padding: 6rem 2rem;
   background-image: url("/giftbackground.png");
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   text-align: center;
   position: relative;
+  min-height: 80vh;
 }
 
 .surpriseContainer {
