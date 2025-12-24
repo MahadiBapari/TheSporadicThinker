@@ -26,7 +26,21 @@ app.use(
 );
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: (origin, callback) => {
+      const allowedOrigins = process.env.CORS_ORIGIN 
+        ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+        : ["http://localhost:3000"];
+      
+      // Allow requests with no origin (like mobile apps, Postman, or server-to-server requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`CORS: Blocked request from origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
@@ -39,8 +53,17 @@ const uploadsPath = path.join(process.cwd(), "uploads");
 app.use(
   "/uploads",
   express.static(uploadsPath, {
-    setHeaders: (res: any) => {
-      res.set("Access-Control-Allow-Origin", process.env.CORS_ORIGIN || "http://localhost:3000");
+    setHeaders: (res: any, req: any) => {
+      const origin = req.headers.origin;
+      const allowedOrigins = process.env.CORS_ORIGIN 
+        ? process.env.CORS_ORIGIN.split(',').map((o: string) => o.trim())
+        : ["http://localhost:3000"];
+      
+      if (origin && allowedOrigins.includes(origin)) {
+        res.set("Access-Control-Allow-Origin", origin);
+      } else {
+        res.set("Access-Control-Allow-Origin", allowedOrigins[0] || "http://localhost:3000");
+      }
       res.set("Cross-Origin-Resource-Policy", "cross-origin");
     },
   })
