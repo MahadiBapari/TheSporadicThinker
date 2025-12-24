@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import styles from "./page.module.css";
 
 interface DashboardStats {
@@ -118,7 +119,7 @@ export default function AdminDashboard() {
               {recentPosts.map((post) => (
                 <li key={post.id}>
                   {post.title}{" "}
-                  <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
+                  <span className={styles.postStatus}>
                     ({post.status})
                   </span>
                 </li>
@@ -130,12 +131,12 @@ export default function AdminDashboard() {
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Quick Actions</h2>
           <div className={styles.actions}>
-            <a href="/admin/posts/new" className={styles.actionButton}>
+            <Link href="/admin/posts/new" className={styles.actionButton}>
               Create New Post
-            </a>
-            <a href="/admin/categories" className={styles.actionButton}>
+            </Link>
+            <Link href="/admin/categories" className={styles.actionButton}>
               Manage Categories
-            </a>
+            </Link>
           </div>
         </div>
       </div>

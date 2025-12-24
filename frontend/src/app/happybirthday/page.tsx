@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import styles from "./page.module.css";
 import Image from "next/image";
 
@@ -109,105 +110,27 @@ export default function HappyBirthdayPage() {
         <p className={styles.quoteText}>
         I spent years of my life never really understanding why birthdays mattered. They came and went like any other day, carrying no excitement, no anticipation, just another date on the calendar. That was before you walked into my life. Somehow, without trying, you gave birthdays meaning. Not the kind that can be explained with words, but the kind that settles quietly in the heart and stays there.
 Year after year, there has been only one day I truly looked forward to, yours. Every time it returned, it felt like a reminder of how grateful I was that the world chose that day to bring you into it. And this year, in so many ways, it feels the same… except for one aching difference—your presence is missing from my arms.
-I miss you, darling, in ways that language cannot hold. I miss you in the small, intimate moments, the way I would lean in to kiss your forehead, the way I would whisper “happy birthday” as if the words themselves carried a promise. This year, I can’t do that. I can’t be there to touch you, to look into your eyes, to let my silence say everything my heart feels.
+I miss you, darling, in ways that language cannot hold. I miss you in the small, intimate moments, the way I would lean in to kiss your forehead, the way I would whisper &quot;happy birthday&quot; as if the words themselves carried a promise. This year, I can&apos;t do that. I can&apos;t be there to touch you, to look into your eyes, to let my silence say everything my heart feels.
 Yet even from afar, my love reaches you. Every thought, every memory, every beat of my heart is with you today. Distance may stand between us, but it cannot dim what you mean to me, nor can it lessen the weight of this day in my heart.
 So today, I celebrate you in absence, loving you in longing, holding you in every quiet moment. Happy Birthday, my love. Until the day I can finally kiss your forehead again and say these words where they belong, right beside you. <br /><br /> Your Love, <br /> <span className={styles.signature}>Mahadi</span>
 
         </p>
       </section>
 
-      {/* Services Section */}
-      <section className={styles.servicesSection}>
-        <div className={styles.servicesContainer}>
-          <div className={styles.servicesLeft}>
-            <h2 className={styles.servicesHeading}>
-              Ways I celebrate special occasions:
-            </h2>
-            <div className={styles.decorativeRoseWhite}></div>
-          </div>
-          <div className={styles.servicesRight}>
-            <ul className={styles.servicesList}>
-              <li className={styles.serviceItem}>
-                <span>Birthday parties and celebrations</span>
-              </li>
-              <li className={styles.serviceItem}>
-                <span>Memorable moments and milestones</span>
-              </li>
-              <li className={styles.serviceItem}>
-                <span>Personalized gifts and surprises</span>
-              </li>
-              <li className={styles.serviceItem}>
-                <span>Heartfelt messages and wishes</span>
-              </li>
-              <li className={styles.serviceItem}>
-                <span>Creating lasting memories</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom Section */}
-      <section className={styles.bottomSection}>
-        <div className={styles.bottomContainer}>
-          {/* Top Left - Image */}
-          <div className={styles.bottomImageLeft}>
-            <div className={styles.imageTray}>
-              <Image
-                src="/bd1.jpg"
-                alt="Birthday Items"
-                fill
-                className={styles.trayImage}
-              />
-            </div>
-          </div>
-
-          {/* Top Right - How Can I Help */}
-          <div className={styles.bottomTextRight}>
-            <h2 className={styles.bottomHeading}>How can I help you?</h2>
-            <p className={styles.bottomText}>
-              Celebrations are magical when you get them right, and working with
-              wonderful people to create special moments is what I love to do.
-            </p>
-            <p className={styles.bottomText}>
-              I&apos;m open to planning birthday parties, creating personalized gifts,
-              organizing surprises, and making every occasion memorable and
-              meaningful.
-            </p>
-            <p className={styles.bottomTextDotted}>
-              Something else in mind? ................... Let&apos;s talk about it.
-            </p>
-          </div>
-
-          {/* Bottom Left - Why Work With Me */}
-          <div className={styles.bottomTextLeft}>
-            <h2 className={styles.bottomHeading}>Why celebrate with me?</h2>
-            <p className={styles.bottomText}>
-              I have extensive experience in creating beautiful and meaningful
-              celebrations for a variety of occasions.
-            </p>
-            <p className={styles.bottomText}>
-              With years of experience in event planning, gift curation, and
-              creating memorable experiences, I&apos;ve successfully helped people
-              celebrate birthdays, anniversaries, and special milestones.
-            </p>
-            <p className={styles.bottomText}>
-              And I bring all of my creativity and attention to detail to every
-              celebration in what can be a unique, personal, and heartfelt
-              approach. An approach that&apos;s exactly right for the occasion
-              and the people involved.
-            </p>
-          </div>
-
-          {/* Bottom Right - Image */}
-          <div className={styles.bottomImageRight}>
+      {/* Surprise Section */}
+      <section className={styles.surpriseSection}>
+        <div className={styles.surpriseContainer}>
+          <p className={styles.surpriseText}>Hey baby I couldnt get you much this year.<br /> But here is a small gift from me to you. <br /> Unbox the gift Baby</p>
+          <Link href="https://thesporadicthinker.com" className={styles.surpriseGiftBox}>
             <Image
-              src="/bd1.jpg"
-              alt="Celebration"
-              fill
-              className={styles.bottomImage}
+              src="/giftbox.png"
+              alt="Surprise Gift Box"
+              width={200}
+              height={200}
+              className={styles.giftBoxImage}
+              priority
             />
-          </div>
+          </Link>
         </div>
       </section>
     </div>

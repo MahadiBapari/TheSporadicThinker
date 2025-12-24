@@ -80,6 +80,11 @@
   color: #6b7280;
 }
 
+.postStatus {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
 .actions {
   display: flex;
   flex-direction: column;
