@@ -488,22 +488,27 @@
 /* Surprise Section */
 .surpriseSection {
   padding: 6rem 2rem;
-  background-color: #fff4ed;
+  background-image: url("/giftbackground.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   text-align: center;
+  position: relative;
 }
 
 .surpriseContainer {
-  max-width: 600px;
+  max-width: auto;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  padding: 2rem;
 }
 
 .surpriseText {
   font-size: 1.5rem;
-  color: #2c2c2c;
+  color: #ffffff;
   font-family: var(--font-marcellus), serif;
   margin: 0;
 }
