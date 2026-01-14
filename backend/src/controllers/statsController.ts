@@ -12,7 +12,7 @@ export async function getAdminStats(
       [categoryCountRows],
       [recentPostsRows],
     ] = (await Promise.all([
-      pool.query(
+      pool.execute(
         `SELECT 
            COUNT(*) AS totalPosts,
            SUM(CASE WHEN status = 'published' THEN 1 ELSE 0 END) AS publishedPosts,
@@ -20,8 +20,8 @@ export async function getAdminStats(
            COALESCE(SUM(views), 0) AS totalViews
          FROM posts`
       ),
-      pool.query(`SELECT COUNT(*) AS totalCategories FROM categories`),
-      pool.query(
+      pool.execute(`SELECT COUNT(*) AS totalCategories FROM categories`),
+      pool.execute(
         `SELECT id, title, slug, status, created_at
          FROM posts
          ORDER BY created_at DESC
@@ -40,7 +40,7 @@ export async function getAdminStats(
 
     const recentPosts = recentPostsRows || [];
 
-    return res.json({
+    return (res as any).json({
       stats: {
         totalPosts: Number(postCounts.totalPosts) || 0,
         publishedPosts: Number(postCounts.publishedPosts) || 0,
@@ -51,7 +51,7 @@ export async function getAdminStats(
       recentPosts,
     });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 

@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "../types/express";
 import {
   createPost,
   deletePost,
@@ -33,7 +33,7 @@ export async function createAdminPost(
       isHero,
       heroOrder,
       isFavorite,
-    } = req.body as {
+    } = (req as any).body as {
       title: string;
       slug?: string;
       content: string;
@@ -46,14 +46,14 @@ export async function createAdminPost(
     };
 
     if (!title || !content) {
-      return res
+      return (res as any)
         .status(400)
         .json({ message: "Title and content are required" });
     }
 
-    const authorId = (req.user as any)?.id;
+    const authorId = ((req as any).user as any)?.id;
     if (!authorId) {
-      return res.status(401).json({ message: "Not authorized" });
+      return (res as any).status(401).json({ message: "Not authorized" });
     }
 
     const file = (req as any).file as Express.Multer.File | undefined;
@@ -77,9 +77,9 @@ export async function createAdminPost(
       is_favorite: isFavorite === "1" || isFavorite === "true",
     });
 
-    return res.status(201).json({ post });
+    return (res as any).status(201).json({ post });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -89,9 +89,9 @@ export async function updateAdminPost(
   next: NextFunction
 ) {
   try {
-    const id = Number(req.params.id);
+    const id = Number((req as any).params.id);
     if (Number.isNaN(id)) {
-      return res.status(400).json({ message: "Invalid post id" });
+      return (res as any).status(400).json({ message: "Invalid post id" });
     }
 
     const {
@@ -104,7 +104,7 @@ export async function updateAdminPost(
       isHero,
       heroOrder,
       isFavorite,
-    } = req.body as {
+    } = (req as any).body as {
       title?: string;
       slug?: string;
       content?: string;
@@ -145,12 +145,12 @@ export async function updateAdminPost(
     });
 
     if (!updated) {
-      return res.status(404).json({ message: "Post not found" });
+      return (res as any).status(404).json({ message: "Post not found" });
     }
 
-    return res.json({ post: updated });
+    return (res as any).json({ post: updated });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -160,20 +160,20 @@ export async function deleteAdminPost(
   next: NextFunction
 ) {
   try {
-    const id = Number(req.params.id);
+    const id = Number((req as any).params.id);
     if (Number.isNaN(id)) {
-      return res.status(400).json({ message: "Invalid post id" });
+      return (res as any).status(400).json({ message: "Invalid post id" });
     }
 
     const post = await getPostById(id);
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return (res as any).status(404).json({ message: "Post not found" });
     }
 
     await deletePost(id);
-    return res.status(204).send();
+    return (res as any).status(204).send();
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -184,9 +184,9 @@ export async function getAdminPosts(
 ) {
   try {
     const posts = await getAllPosts();
-    return res.json({ posts });
+    return (res as any).json({ posts });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -196,19 +196,19 @@ export async function getAdminPostById(
   next: NextFunction
 ) {
   try {
-    const id = Number(req.params.id);
+    const id = Number((req as any).params.id);
     if (Number.isNaN(id)) {
-      return res.status(400).json({ message: "Invalid post id" });
+      return (res as any).status(400).json({ message: "Invalid post id" });
     }
 
     const post = await getPostById(id);
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return (res as any).status(404).json({ message: "Post not found" });
     }
 
-    return res.json({ post });
+    return (res as any).json({ post });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -236,9 +236,9 @@ export async function getPublicPosts(
           : null,
       };
     });
-    return res.json({ posts: formattedPosts });
+    return (res as any).json({ posts: formattedPosts });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -249,9 +249,9 @@ export async function getPublicHeroPosts(
 ) {
   try {
     const posts = await getHeroPosts();
-    return res.json({ posts });
+    return (res as any).json({ posts });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -277,9 +277,9 @@ export async function getPublicFavoritePosts(
           : null,
       };
     });
-    return res.json({ posts: formattedPosts });
+    return (res as any).json({ posts: formattedPosts });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 
@@ -289,10 +289,10 @@ export async function getPublicPostBySlug(
   next: NextFunction
 ) {
   try {
-    const { slug } = req.params;
+    const { slug } = (req as any).params;
     const post = await getPostBySlug(slug, true);
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return (res as any).status(404).json({ message: "Post not found" });
     }
 
     // Format post with nested category data
@@ -309,9 +309,9 @@ export async function getPublicPostBySlug(
         : null,
     };
 
-    return res.json({ post: formattedPost });
+    return (res as any).json({ post: formattedPost });
   } catch (err) {
-    next(err);
+    (next as any)(err);
   }
 }
 

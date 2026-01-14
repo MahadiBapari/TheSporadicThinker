@@ -1,8 +1,8 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "../types/express";
 
 export function notFound(req: Request, res: Response, next: NextFunction) {
-  res.status(404);
-  next(new Error(`Not Found - ${req.originalUrl}`));
+  (res as any).status(404);
+  (next as any)(new Error(`Not Found - ${(req as any).originalUrl}`));
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -12,8 +12,8 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  res.status(statusCode).json({
+  const statusCode = (res as any).statusCode === 200 ? 500 : (res as any).statusCode;
+  (res as any).status(statusCode).json({
     message: err.message,
     stack: process.env.NODE_ENV === "production" ? undefined : err.stack,
   });
